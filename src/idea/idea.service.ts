@@ -16,15 +16,7 @@ export class IdeaService {
   }
 
   async read(id: string) {
-    const idea = await this.ideaRepository.findOne({
-      where: { id },
-    });
-
-    if (!idea) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
-
-    return idea;
+    return await this.find(id);
   }
 
   async create(data: IdeaDto) {
@@ -36,13 +28,7 @@ export class IdeaService {
   }
 
   async update(id: string, data: Partial<IdeaDto>) {
-    const idea = await this.ideaRepository.findOne({
-      where: { id },
-    });
-
-    if (!idea) {
-      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
-    }
+    await this.find(id);
 
     await this.ideaRepository.update({ id }, data);
 
@@ -50,15 +36,19 @@ export class IdeaService {
   }
 
   async destroy(id: string) {
-    const idea = await this.ideaRepository.findOne({
-      where: { id },
-    });
+    const idea = await this.find(id);
+
+    await this.ideaRepository.delete({ id });
+
+    return idea;
+  }
+
+  async find(id: string) {
+    const idea = await this.ideaRepository.findOne({ id });
 
     if (!idea) {
       throw new HttpException('Not found', HttpStatus.NOT_FOUND);
     }
-
-    await this.ideaRepository.delete({ id });
 
     return idea;
   }
