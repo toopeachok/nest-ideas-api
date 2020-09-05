@@ -19,14 +19,14 @@ export class UserController {
     return this.userService.showAll();
   }
 
-  @UsePipes(ValidationPipe)
   @Post('login')
+  @UsePipes(ValidationPipe)
   login(@Body() data: UserDto) {
     return this.userService.login(data);
   }
 
-  @UsePipes(ValidationPipe)
   @Post('register')
+  @UsePipes(ValidationPipe)
   register(@Body() data: UserDto) {
     return this.userService.register(data);
   }

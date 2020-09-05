@@ -2,6 +2,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -27,11 +29,26 @@ export class IdeaEntity {
   )
   author: UserEntity;
 
+  @ManyToMany(type => UserEntity, { cascade: true })
+  @JoinTable()
+  upvotes: UserEntity[];
+
+  @ManyToMany(type => UserEntity, { cascade: true })
+  @JoinTable()
+  downvotes: UserEntity[];
+
   toResponseObject(): IdeaRO {
     const responseObject: any = {
       ...this,
       author: this.author ? this.author.toResponseObject() : null,
     };
+
+    if (this.upvotes) {
+      responseObject.upvotes = this.upvotes.length;
+    }
+    if (this.downvotes) {
+      responseObject.downvotes = this.downvotes.length;
+    }
 
     return responseObject;
   }

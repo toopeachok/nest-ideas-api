@@ -29,15 +29,16 @@ export class IdeaController {
     return this.ideaService.read(id);
   }
 
-  @UsePipes(ValidationPipe)
   @Post()
-  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @UseGuards(new AuthGuard())
   createIdea(@User('id') user, @Body() data: IdeaDTO) {
     return this.ideaService.create(user, data);
   }
 
   @Put(':id')
-  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @UseGuards(new AuthGuard())
   updateIdea(
     @Param('id') id: string,
     @User('id') user,
@@ -47,7 +48,32 @@ export class IdeaController {
   }
 
   @Delete(':id')
+  @UseGuards(new AuthGuard())
   destroyIdea(@Param('id') id: string, @User('id') user) {
     return this.ideaService.destroy(id, user);
+  }
+
+  @Post(':id/bookmark')
+  @UseGuards(new AuthGuard())
+  bookmarkIdea(@Param('id') id: string, @User('id') user: string) {
+    return this.ideaService.bookmark(id, user);
+  }
+
+  @Delete(':id/bookmark')
+  @UseGuards(new AuthGuard())
+  unbookmarkIdea(@Param('id') id: string, @User('id') user: string) {
+    return this.ideaService.unbookmark(id, user);
+  }
+
+  @Post(':id/upvote')
+  @UseGuards(new AuthGuard())
+  upvoteIdea(@Param('id') id: string, @User('id') user: string) {
+    return this.ideaService.upvote(id, user);
+  }
+
+  @Post(':id/downvote')
+  @UseGuards(new AuthGuard())
+  downvoteIdea(@Param('id') id: string, @User('id') user: string) {
+    return this.ideaService.downvote(id, user);
   }
 }
