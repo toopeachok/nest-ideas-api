@@ -5,9 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { IdeaEntity } from './idea.entity';
 import { APP_PIPE } from '@nestjs/core';
 import { ValidationPipe } from '../shared/validation.pipe';
+import { UserEntity } from '../user/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([IdeaEntity])],
+  imports: [TypeOrmModule.forFeature([IdeaEntity, UserEntity])],
   controllers: [IdeaController],
   providers: [
     IdeaService,
