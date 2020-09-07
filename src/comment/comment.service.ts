@@ -24,19 +24,23 @@ export class CommentService {
     });
   }
 
-  async showByIdea(id: string) {
-    const idea = await this.ideaRepository.findOne({
-      where: { id },
-      relations: ['comments', 'comments.author', 'comments.idea'],
-    });
-
-    return idea.comments.map(idea => idea.toResponseObject());
-  }
-
-  async showByUser(id: string) {
+  async showByIdea(id: string, page = 1) {
     const comments = await this.commentRepository.find({
       where: { author: { id } },
       relations: ['author'],
+      take: 25,
+      skip: 25 * (page - 1),
+    });
+
+    return comments.map(idea => idea.toResponseObject());
+  }
+
+  async showByUser(id: string, page = 1) {
+    const comments = await this.commentRepository.find({
+      where: { author: { id } },
+      relations: ['author'],
+      take: 25,
+      skip: 25 * (page - 1),
     });
 
     return comments.map(idea => idea.toResponseObject());

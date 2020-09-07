@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -20,8 +21,13 @@ export class IdeaController {
   constructor(private ideaService: IdeaService) {}
 
   @Get()
-  showAllIdeas() {
-    return this.ideaService.showAll();
+  showAllIdeas(@Query('page') page: number) {
+    return this.ideaService.showAll(page);
+  }
+
+  @Get('/newest')
+  showNewestIdeas(@Query('page') page: number) {
+    return this.ideaService.showAll(page, true);
   }
 
   @Get(':id')
