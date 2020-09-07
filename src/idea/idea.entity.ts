@@ -5,11 +5,13 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../user/user.entity';
 import { IdeaRO } from './idea.dto';
+import { CommentEntity } from '../comment/comment.entity';
 
 @Entity('idea')
 export class IdeaEntity {
@@ -36,6 +38,13 @@ export class IdeaEntity {
   @ManyToMany(type => UserEntity, { cascade: true })
   @JoinTable()
   downvotes: UserEntity[];
+
+  @OneToMany(
+    type => CommentEntity,
+    comment => comment.idea,
+    { cascade: true },
+  )
+  comments: CommentEntity[];
 
   toResponseObject(): IdeaRO {
     const responseObject: any = {

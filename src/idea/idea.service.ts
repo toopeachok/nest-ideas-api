@@ -17,14 +17,19 @@ export class IdeaService {
 
   async showAll(): Promise<IdeaRO[]> {
     const ideas = await this.ideaRepository.find({
-      relations: ['author', 'downvotes', 'upvotes'],
+      relations: ['author', 'downvotes', 'upvotes', 'comments'],
     });
 
     return ideas.map(idea => idea.toResponseObject());
   }
 
   async read(id: string): Promise<IdeaRO> {
-    const idea = await this.find(id, ['author', 'downvotes', 'upvotes']);
+    const idea = await this.find(id, [
+      'author',
+      'downvotes',
+      'upvotes',
+      'comments',
+    ]);
     return idea.toResponseObject();
   }
 
@@ -48,13 +53,18 @@ export class IdeaService {
 
     await this.ideaRepository.update({ id }, data);
 
-    idea = await this.find(id, ['author', 'downvotes', 'upvotes']);
+    idea = await this.find(id, ['author', 'downvotes', 'upvotes', 'comments']);
 
     return idea.toResponseObject();
   }
 
   async destroy(id: string, userID: string): Promise<IdeaRO> {
-    const idea = await this.find(id, ['author', 'downvotes', 'upvotes']);
+    const idea = await this.find(id, [
+      'author',
+      'downvotes',
+      'upvotes',
+      'comments',
+    ]);
 
     IdeaService.ensureOwnership(idea, userID);
 
@@ -103,7 +113,12 @@ export class IdeaService {
   }
 
   async upvote(id: string, userID: string) {
-    let idea = await this.find(id, ['author', 'upvotes', 'downvotes']);
+    let idea = await this.find(id, [
+      'author',
+      'upvotes',
+      'downvotes',
+      'comments',
+    ]);
 
     const user = await this.userRepository.findOne({ where: { id: userID } });
     idea = await this.vote(idea, user, Votes.UP);
@@ -112,7 +127,12 @@ export class IdeaService {
   }
 
   async downvote(id: string, userID: string) {
-    let idea = await this.find(id, ['author', 'upvotes', 'downvotes']);
+    let idea = await this.find(id, [
+      'author',
+      'upvotes',
+      'downvotes',
+      'comments',
+    ]);
 
     const user = await this.userRepository.findOne({ where: { id: userID } });
     idea = await this.vote(idea, user, Votes.DOWN);
