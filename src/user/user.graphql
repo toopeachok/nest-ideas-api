@@ -6,7 +6,19 @@ type User {
   ideas: [Idea!]
   comments: [Comment!]
 }
+
+type Auth {
+  username: String!
+  token: String!
+}
+
 extend type Query {
   users(page: Int): [User!]
   user(username: String!): User
+  whoami: User
+}
+
+type Mutation {
+  login(username: String!, password: String!): Auth!
+  register(username: String!, password: String!): Auth!
 }
