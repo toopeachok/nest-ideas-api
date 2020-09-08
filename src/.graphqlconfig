@@ -1,0 +1,12 @@
+{
+  "schemaPath": "./root.graphql",
+  "projects": {
+    "app": {
+      "includes": [
+        "./idea/*.graphql",
+        "./comment/*.graphql",
+        "./user/*.graphql"
+      ]
+    }
+  }
+}

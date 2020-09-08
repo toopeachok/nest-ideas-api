@@ -1,0 +1,9 @@
+type Comment {
+  id: ID!
+  created: String!
+  comment: String!
+}
+
+extend type Query {
+  comment(id: ID!): Comment
+}

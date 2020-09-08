@@ -8,9 +8,18 @@ import { HttpExceptionFilter } from './shared/http-exception.filter';
 import { LoggingInterceptor } from './shared/logging.interceptor';
 import { UserModule } from './user/user.module';
 import { CommentModule } from './comment/comment.module';
+import { GraphQLModule } from '@nestjs/graphql';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), IdeaModule, UserModule, CommentModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    GraphQLModule.forRoot({
+      typePaths: ['./**/*.graphql'],
+    }),
+    IdeaModule,
+    UserModule,
+    CommentModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

@@ -1,0 +1,16 @@
+type Idea {
+    id: ID!
+    updated: String!
+    created: String!
+    idea: String!
+    description: String!
+    author: User
+    upvotes: Int
+    downvotes: Int
+    comments: [Comment!]
+}
+
+extend type Query {
+    ideas(page: Int, newest: Boolean): [Idea!]!
+    idea(id: ID!): Idea!
+}
